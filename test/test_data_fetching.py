@@ -1,9 +1,11 @@
 import unittest
 from unittest import mock
-from src.data_fetching import fetch_puns_list
 import requests
 
-class TestNetwork(unittest.TestCase):
+from src.data_fetching import fetch_puns_list
+
+
+class TestExampleFetching(unittest.TestCase):
 
     @mock.patch('requests.get')
     def test_data_fetching_not_found(self, mocked_get):
