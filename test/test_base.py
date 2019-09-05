@@ -12,4 +12,4 @@ class TestNetwork(unittest.TestCase):
             fetch_puns_list(1)
 
     def test_data_fetching_ok(self):
-        self.assertNotEqual(fetch_puns_list(1), 0)
+        self.assertNotEqual(len(fetch_puns_list(1)), 0)
