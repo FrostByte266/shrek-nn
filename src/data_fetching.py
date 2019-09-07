@@ -1,6 +1,9 @@
 from bs4 import BeautifulSoup
+import re
 import requests
+from random import shuffle
 from time import sleep
+from sys import argv
 
 def fetch_puns_list(num_pages):
     base_url = 'https://onelinefun.com/puns/{page}/'
@@ -14,7 +17,9 @@ def fetch_puns_list(num_pages):
             page_puns = []
             soup = BeautifulSoup(request.content, 'html.parser')
             for div in soup.findAll('div', {'class': 'o'}):
-                div_puns = [pun.getText() for pun in div.findAll('p')]
+                regex = re.compile(r"""([\"'])(?:(?=(\\?))\2.)*?\1""")
+                div_puns = [[pun.getText(), 1] if not re.match(regex, pun.getText()) else None for pun in div.findAll('p')]
                 page_puns.extend(div_puns)
             puns.extend(page_puns)
+    puns = [item for item in puns if item]
     return puns

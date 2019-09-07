@@ -15,3 +15,7 @@ class TestExampleFetching(unittest.TestCase):
 
     def test_data_fetching_ok(self):
         self.assertNotEqual(len(fetch_puns_list(1)), 0)
+
+    def test_no_none_in_fetch(self):
+        puns = fetch_puns_list(1)
+        self.assertNotIn(None, puns)
