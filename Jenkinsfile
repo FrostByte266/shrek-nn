@@ -8,12 +8,13 @@ pipeline {
     }
     stage('Setup') {
       steps {
-        sh "python -c 'from src.preprocessing import make_train_csv; make_train_csv'"
+        sh "docker run --rm --name shrek_container shrek"
+        sh "docker exec shrek_container python -c 'from src.preprocessing import make_train_csv; make_train_csv'"
       }
     }
     stage('Test'){
       steps {
-        sh "docker run --rm shrek python -m unittest discover ./test/"
+        sh "docker exec shrek_container python -m unittest discover ./test/"
       }
     }
   }
