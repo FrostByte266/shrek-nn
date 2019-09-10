@@ -1,1 +1,2 @@
-docker run -it --rm -v /home/bj/Documents/shrek_nn/src:/src -v /home/bj/Documents/shrek_nn/test:/test -v /home/bj/Documents/shrek_nn/data:/data shrek bash
+xhost +
+docker run -it --rm --net=host -e DISPLAY -v /home/bj/Documents/shrek_nn/src:/src -v /home/bj/Documents/shrek_nn/test:/test -v /home/bj/Documents/shrek_nn/data:/data shrek bash

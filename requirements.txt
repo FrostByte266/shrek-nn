@@ -6,3 +6,5 @@ tensorflow
 neupy
 scikit-learn
 essential-generators
+pandas
+pysimplegui

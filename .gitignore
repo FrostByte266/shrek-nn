@@ -1,2 +1,4 @@
 data/Shrek.txt
+data/sentences.csv
+data/graph.png
 *.pyc
