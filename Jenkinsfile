@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Setup') {
       steps {
-        sh "docker run -d -t --name shrek_container shrek"
+        sh "docker run -d -t --name shrek_container shrek bash"
         sh "docker exec shrek_container python -c 'from src.preprocessing import make_train_csv; make_train_csv'"
       }
     }
