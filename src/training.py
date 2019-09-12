@@ -9,24 +9,14 @@ import base64
 
 from preprocessing import *
 
-def add_padding(data):
-    n_sampels = len(data)
-    max_seq_length = max(map(len, data))
-
-    data_matrix = np.zeros((n_sampels, max_seq_length))
-    for i, sample in enumerate(data):
-        data_matrix[i, -len(sample):] = sample
-
-    return data_matrix
-
 def train_network(num_pages=1):
     training_set, vectorizer = vectorize(make_training_set(num_pages))
     examples = training_set[:, :-1]
     labels = training_set[:, -1:]
     new_examples = np.array([example[0] for example in examples])
     np.set_printoptions(threshold=np.inf)
-    new_examples = (np.pad(new_examples, 0, mode='constant', constant_values=0))
-    # new_examples = add_padding(new_examples)
+    # new_examples = (np.pad(new_examples, 0, mode='constant', constant_values=0))
+    new_examples = add_padding(new_examples)
     # print(new_examples)
     # assert False
     print(new_examples)

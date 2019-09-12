@@ -11,6 +11,16 @@ sys.path.append('/src/')
 
 from data_fetching import fetch_puns_list
 
+def add_padding(data):
+    n_sampels = len(data)
+    max_seq_length = max(map(len, data))
+
+    data_matrix = np.zeros((n_sampels, max_seq_length))
+    for i, sample in enumerate(data):
+        data_matrix[i, -len(sample):] = sample
+
+    return data_matrix
+
 def make_train_csv():
     with open('/data/sentences.txt', 'r') as f:
         lines = f.readlines()
