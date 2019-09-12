@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import dill
+import io
+import base64
 
 from preprocessing import *
 
@@ -52,6 +54,9 @@ def train_network(num_pages=1):
 
     optimizer.train(new_examples, new_labels, epochs=1000)
     optimizer.plot_errors(show=False)
-    plt.savefig('/data/graph.png')
+    bytes = io.BytesIO()
+    plt.savefig(bytes)
+    bytes.seek(0)
+    encoded = base64.b64encode(bytes.read())
 
-    return optimizer, vectorizer, [new_examples[0]]
+    return optimizer, vectorizer, [new_examples[0]], encoded
