@@ -16,18 +16,26 @@ def train_network(num_pages=1):
     new_examples = np.array([example[0] for example in examples])
     new_examples = add_padding(new_examples)
     input_size = len(new_examples[0])
-    parsig = Sigmoid(100) >> Sigmoid(100)
-    partan = Tanh(100) >> Tanh(100)
-    parelu = Elu(100) >> Elu(100)
-    parchain_negative = Tanh(100) >> Elu(100)
-    parchain_zero = Sigmoid(100) >> Relu(100)
+    scale = int(input_size/10 * (2/3))+1
+    concat_noisynormdrop_one = Concatenate() >> BatchNorm() >> Dropout(proba=.2) >> GaussianNoise(std=0.4)
+    concat_noisynormdrop_two = Concatenate() >> BatchNorm() >> Dropout(proba=.2) >> GaussianNoise(std=0.4)
+    concat_noisynormdrop_three = Concatenate() >> BatchNorm() >> Dropout(proba=.1) >> GaussianNoise(std=0.4)
+    concat_noisynormdrop_four = Concatenate() >> BatchNorm() >> Dropout(proba=.1) >> GaussianNoise(std=0.4)
+    noisy_para_seq = Input(input_size)>>\
+    						Linear(scale)>>\
+    						(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
+    						concat_noisynormdrop_one>>\
+    						(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
+    						concat_noisynormdrop_two>>\
+    						(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
+    						concat_noisynormdrop_three >>\
+    						(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
+    						concat_noisynormdrop_four>>\
+    						HardSigmoid(1)
 
-    network = Input(input_size) >> Linear(100) >> (
-    		parsig | partan | parelu | parchain_negative | parchain_zero) >> \
-    						Concatenate() >> Tanh(100) >> Relu(1)
 
     optimizer = algorithms.Adam(
-        network,
+        noisy_para_seq,
         batch_size = None,
         shuffle_data=True,
         loss='binary_crossentropy',
