@@ -8,3 +8,4 @@ scikit-learn
 essential-generators
 pandas
 pysimplegui
+dill

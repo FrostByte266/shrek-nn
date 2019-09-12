@@ -48,6 +48,8 @@ def vectorize(training_set):
     without_labels = training_set[:, :-1]
     list_set = np.array([item[0] for item in without_labels])
     X = vectorizer.fit_transform(list_set)
+    np.set_printoptions(threshold=np.inf)
+    # print(X.toarray())
     out = []
     for key, value in enumerate(X.toarray()):
         # print(f'Key: {key}, Value: {value}, Label: {training_set[key][1]}\n\n')
