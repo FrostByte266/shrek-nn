@@ -14,14 +14,7 @@ def train_network(num_pages=1):
     examples = training_set[:, :-1]
     labels = training_set[:, -1:]
     new_examples = np.array([example[0] for example in examples])
-    np.set_printoptions(threshold=np.inf)
-    # new_examples = (np.pad(new_examples, 0, mode='constant', constant_values=0))
     new_examples = add_padding(new_examples)
-    # print(new_examples)
-    # assert False
-    print(new_examples)
-    size=len(new_examples[0])
-    new_labels = labels
     input_size = len(new_examples[0])
     parsig = Sigmoid(100) >> Sigmoid(100)
     partan = Tanh(100) >> Tanh(100)
@@ -42,7 +35,7 @@ def train_network(num_pages=1):
         regularizer=algorithms.l2(0.00001)
     )
 
-    optimizer.train(new_examples, new_labels, epochs=1000)
+    optimizer.train(new_examples, labels, epochs=1000)
     optimizer.plot_errors(show=False)
     bytes = io.BytesIO()
     plt.savefig(bytes)
