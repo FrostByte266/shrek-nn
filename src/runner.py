@@ -17,8 +17,8 @@ def simple_runner(sentence, pretrained=False):
     sg.ChangeLookAndFeel('Black')
     layout = [
         [sg.Text(f"Sentence: {sentence}", font=('Ubuntu', '18'))],
-        [sg.Text(f'Result: {"Pun" if pred > 0 else "Not Pun"}', font=('Ubuntu', '20'))],
-        [sg.Text(f'ReLu output: {pred}', font=('Ubuntu', '18'))],
+        [sg.Text(f'Result: {"Pun" if pred > 0.5 else "Not Pun"}', font=('Ubuntu', '20'))],
+        [sg.Text(f'Raw Output: {pred}', font=('Ubuntu', '18'))],
         [sg.Text(f'Training graph:', font=('Ubuntu', '18'))],
         [sg.Image(data=graph)],
         [sg.Button('Save network'), sg.Exit()]
@@ -48,7 +48,7 @@ def file_runner(file_path, pretrained=False):
     inputs = add_padding(inputs)
     outputs = optimizer.predict(inputs)
     for key, value in enumerate(outputs):
-        if value > 0:
+        if value == 1:
             print(data[key])
 
 
@@ -70,5 +70,5 @@ if __name__ == '__main__':
             win.Close()
             break
 
-    simple_runner("Everyone was busy, so I went to the movie alone.", pretrained=pretrained)
-    # file_runner('/data/Shrek.txt', pretrained=True)
+    simple_runner("To the mathematicians who thought of the idea of zero, thanks for nothing!", pretrained=pretrained)
+    # file_runner('/data/Shrek.txt', pretrained=False)
