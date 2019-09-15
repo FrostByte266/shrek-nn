@@ -1,2 +1,2 @@
 xhost +
-docker run -it --rm --net=host -e DISPLAY -v /home/bj/Documents/shrek_nn/src:/src -v /home/bj/Documents/shrek_nn/test:/test -v /home/bj/Documents/shrek_nn/data:/data shrek bash
+docker run -it --rm --net=host -e DISPLAY -v $PWD/src:/src -v $PWD/test:/test -v $PWD/data:/data shrek bash
