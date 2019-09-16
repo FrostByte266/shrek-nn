@@ -2,7 +2,6 @@ beautifulsoup4
 requests
 Fuzzy
 fuzzywuzzy[speedup]
-tensorflow
 neupy
 scikit-learn
 essential-generators

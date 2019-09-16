@@ -1,6 +1,8 @@
 import numpy as np
 import unittest
+import sys 
 
+sys.path.append('/src/')
 from src.homophone import *
 from src.data_fetching import *
 from src.preprocessing import *

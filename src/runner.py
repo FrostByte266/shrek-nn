@@ -13,13 +13,13 @@ def simple_runner(sentence, pretrained=False):
     np.append(examples, example)
     examples = add_padding(examples)
     pred = optimizer.predict(example[-1])[0][0]
-    print(f'Raw output: {pred}, Result: {"Pun" if pred > 0 else "Not Pun"}')
+    print(f'Raw output: {pred:.2f}, Result: {"Pun" if pred > 0.5 else "Not Pun"}')
+    confidence = f'{pred * 100 if pred > 0.5 else 100 - (pred * 100):.2f}%'
     sg.ChangeLookAndFeel('Black')
     layout = [
         [sg.Text(f"Sentence: {sentence}", font=('Ubuntu', '18'))],
-        [sg.Text(f'Result: {"Pun" if pred > 0.5 else "Not Pun"}', font=('Ubuntu', '20'))],
-        [sg.Text(f'Raw Output: {pred}', font=('Ubuntu', '18'))],
-        [sg.Text(f'Training graph:', font=('Ubuntu', '18'))],
+        [sg.Text(f'Prediction: {"Pun" if pred > 0.5 else "Not Pun"}', font=('Ubuntu', '20'))],
+        [sg.Text(f'Confidence: {confidence}', font=('Ubuntu', '18'))],
         [sg.Image(data=graph)],
         [sg.Button('Save network'), sg.Exit()]
     ]
