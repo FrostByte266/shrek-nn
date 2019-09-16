@@ -17,21 +17,25 @@ def train_network(num_pages=1):
 	new_examples = add_padding(new_examples)
 	input_size = len(new_examples[0])
 	scale = int(input_size/10 * (2/3))+1
-	concat_noisynormdrop_one = Concatenate() >> GaussianNoise(std=2) >> BatchNorm() >> Dropout(proba=.7)
-	concat_noisynormdrop_two = Concatenate() >> GaussianNoise(std=2) >> BatchNorm() >> Dropout(proba=.9)
-	concat_noisynormdrop_three = Concatenate()>> GaussianNoise(std=2) >> BatchNorm() >> Dropout(proba=.8)
-	concat_noisynormdrop_four = Concatenate() >> GaussianNoise(std=2) >> BatchNorm() >> Dropout(proba=.7)
+	fourth = int(scale/4)
+	thirds = int(scale/3)
+
+	concat_noisynormdrop_one = Concatenate() >> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.1)
+	concat_noisynormdrop_two = Concatenate()>> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.1)
+	concat_noisynormdrop_three = Concatenate() >> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.1)
+
+	sub_tri = Elu(fourth) >> Sigmoid(fourth)
+	sub_tri_leaky_relu = LeakyRelu(thirds)>>LeakyRelu(thirds)>>LeakyRelu(thirds)
+
 	noisy_para_seq = Input(input_size)>>\
-						Linear(scale)>>\
-						(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
-						concat_noisynormdrop_one>>\
-						(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
-						concat_noisynormdrop_two>>\
-						(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
-						concat_noisynormdrop_three >>\
-						(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
-						concat_noisynormdrop_four>>\
-						HardSigmoid(1)
+							Linear(scale)>>\
+							(Tanh(scale)|Elu(scale)|sub_tri_leaky_relu|sub_tri)>>\
+							concat_noisynormdrop_one>>\
+							(Tanh(scale)>>Tanh(scale)|Elu(scale)>>Elu(scale)|Sigmoid(fourth)>>Sigmoid(fourth))>>\
+							concat_noisynormdrop_two >>\
+							(Tanh(scale)|Elu(scale)|LeakyRelu(scale)|Sigmoid(scale))>>\
+							concat_noisynormdrop_three>>\
+							Sigmoid(1)
 
 
 	optimizer = algorithms.Adam(
@@ -43,7 +47,7 @@ def train_network(num_pages=1):
 		regularizer=algorithms.l2(0.00001)
 	)
 
-	optimizer.train(new_examples, labels, epochs=1000)
+	optimizer.train(new_examples, labels, epochs=3000)
 	optimizer.plot_errors(show=False)
 	bytes = io.BytesIO()
 	plt.savefig(bytes)

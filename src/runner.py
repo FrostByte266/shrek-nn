@@ -4,7 +4,7 @@ from training import *
 
 def simple_runner(sentence, pretrained=False):
     if pretrained is False:
-        optimizer, vectorizer, examples, graph = train_network(num_pages=9)
+        optimizer, vectorizer, examples, graph = train_network(num_pages=20)
     else:
         with open('/data/saved.dill', 'rb') as f:
             optimizer, vectorizer, examples, graph = dill.load(f)
@@ -35,6 +35,26 @@ def simple_runner(sentence, pretrained=False):
 
     window.Close()
 
+def simple_runner_gui(phrase):
+    sg.ChangeLookAndFeel('Black')
+    layout = [
+        [sg.Text('Use pretrained network?')],
+        [sg.Button('Yes'), sg.Button('No')]
+    ]
+    win = sg.Window('Prompt', layout=layout)
+    while True:
+        event, values = win.Read()
+        if event == 'Yes':
+            pretrained=True
+            win.Close()
+            break
+        elif event == 'No':
+            pretrained=False
+            win.Close()
+            break
+
+    simple_runner(phrase, pretrained=pretrained)
+
 def file_runner(file_path, pretrained=False):
     with open(file_path, 'r') as f:
         data = f.readlines()
@@ -53,22 +73,5 @@ def file_runner(file_path, pretrained=False):
 
 
 if __name__ == '__main__':
-    sg.ChangeLookAndFeel('Black')
-    layout = [
-        [sg.Text('Use pretrained network?')],
-        [sg.Button('Yes'), sg.Button('No')]
-    ]
-    win = sg.Window('Prompt', layout=layout)
-    while True:
-        event, values = win.Read()
-        if event == 'Yes':
-            pretrained=True
-            win.Close()
-            break
-        elif event == 'No':
-            pretrained=False
-            win.Close()
-            break
-
-    simple_runner("To the mathematicians who thought of the idea of zero, thanks for nothing!", pretrained=pretrained)
+    simple_runner_gui("To the mathematicians who thought of the idea of zero, thanks for nothing!")
     # file_runner('/data/Shrek.txt', pretrained=False)
