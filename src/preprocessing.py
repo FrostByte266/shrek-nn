@@ -1,13 +1,10 @@
 import csv
 import re
-import sys
 from random import shuffle, seed
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import adjusted_rand_score
-
-sys.path.append('/src/')
 
 from data_fetching import fetch_puns_list
 

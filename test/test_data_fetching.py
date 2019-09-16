@@ -1,7 +1,9 @@
 import unittest
 from unittest import mock
 import requests
+import sys 
 
+sys.path.append('/src/')
 from src.data_fetching import fetch_puns_list
 
 
