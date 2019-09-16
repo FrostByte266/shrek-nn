@@ -68,10 +68,10 @@ def file_runner(file_path, pretrained=False):
     inputs = add_padding(inputs)
     outputs = optimizer.predict(inputs)
     for key, value in enumerate(outputs):
-        if value == 1:
+        if value >=0.5:
             print(data[key])
 
 
 if __name__ == '__main__':
-    simple_runner_gui("To the mathematicians who thought of the idea of zero, thanks for nothing!")
-    # file_runner('/data/Shrek.txt', pretrained=False)
+    simple_runner_gui("What cheese can never be yours? Nacho cheese.")
+    # file_runner('/data/Shrek.txt', pretrained=True)
