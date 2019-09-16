@@ -1,2 +1,2 @@
 xhost +
-docker run -it --rm --net=host -e DISPLAY -v $PWD/src:/src -v $PWD/test:/test -v $PWD/data:/data shrek bash
+docker run -u $(id -u):$(id -g) --gpus all -it --rm --net=host -e DISPLAY -v $PWD/src:/src -v $PWD/test:/test -v $PWD/data:/data shrek bash
