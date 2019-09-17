@@ -6,5 +6,6 @@ COPY requirements.txt /requirements.txt
 RUN pip install -r requirements.txt
 RUN pip install --ignore-installed --upgrade tensorflow-gpu
 RUN apt-get update && apt-get install -y python3-tk
+RUN pip install --upgrade numpy==1.16.4
 
 COPY . .

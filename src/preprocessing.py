@@ -5,6 +5,8 @@ from random import shuffle, seed
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import adjusted_rand_score
+from random import sample
+from random import seed
 
 from data_fetching import fetch_puns_list
 
@@ -27,11 +29,11 @@ def make_train_csv():
     with open('data/sentences.csv', 'w+') as f:
         f.write("\n".join(data))
 
-def load_sentences():
-    with open('/data/sentences.csv', 'r') as f:
-        reader = csv.reader(f, delimiter=',')
-        data = [[str(row[0]), int(row[1])] for row in reader]
-        return data
+# def load_sentences():
+#     with open('/data/sentences.csv', 'r') as f:
+#         reader = csv.reader(f, delimiter=',')
+#         data = [[str(row[0]), int(row[1])] for row in reader]
+#         return data
 
 def make_training_set(pages = 1, rand_seed=None):
     sentences = load_sentences()
@@ -42,6 +44,16 @@ def make_training_set(pages = 1, rand_seed=None):
     shuffle(training_set)
     print(f"Sentences: {len(sentences)}, Puns: {len(puns)}, Final: {len(training_set)}")
     return np.array(training_set, object)
+
+def load_sentences():
+    with open('/data/movie_lines.tsv', 'r') as file:
+        reader = csv.reader(file, delimiter='\t')
+        # for index, row in enumerate(reader):
+        #     assert len(row) == 5, f"{row}, At index: {index}"
+        data = [[row[4], 0] for row in reader]
+        seed(614)
+        sentences = sample(data, 990)
+        return sentences
 
 
 def vectorize(training_set):

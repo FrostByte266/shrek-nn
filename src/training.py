@@ -22,9 +22,9 @@ def train_network(num_pages=1):
 	fourth = int(scale/4)
 	thirds = int(scale/3)
 
-	concat_noisynormdrop_one = Concatenate() >> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.1)
-	concat_noisynormdrop_two = Concatenate()>> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.1)
-	concat_noisynormdrop_three = Concatenate() >> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.1)
+	concat_noisynormdrop_one = Concatenate() >> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.6)
+	concat_noisynormdrop_two = Concatenate()>> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.3)
+	concat_noisynormdrop_three = Concatenate() >> GaussianNoise(std=1) >> BatchNorm() >> Dropout(proba=.3)
 
 	sub_tri = Elu(fourth) >> Sigmoid(fourth)
 	sub_tri_leaky_relu = LeakyRelu(thirds)>>LeakyRelu(thirds)>>LeakyRelu(thirds)
@@ -42,14 +42,18 @@ def train_network(num_pages=1):
 
 	optimizer = algorithms.Adam(
 		noisy_para_seq,
-		batch_size = None,
+		batch_size = 64,
 		shuffle_data=True,
 		loss='binary_crossentropy',
 		verbose=True,
-		regularizer=algorithms.l2(0.1)
+		regularizer=algorithms.l2(0.001),
+		step=algorithms.step_decay(
+        	initial_value=0.10,
+        	reduction_freq=10,
+    	)
 	)
 
-	optimizer.train(training_examples, training_labels, test_examples, test_labels, epochs=2000)
+	optimizer.train(training_examples, training_labels, test_examples, test_labels, epochs=200)
 	prediction = [1 if i > .5 else 0 for i in optimizer.predict(test_examples)]
 	accuracy = [1 if prediction[i] == test_labels[i] else 0 for i in range(len(prediction))].count(1) / len(
 		prediction)

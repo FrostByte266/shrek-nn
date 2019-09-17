@@ -4,7 +4,7 @@ from training import *
 
 def simple_runner(sentence, pretrained=False):
     if pretrained is False:
-        optimizer, vectorizer, examples, graph = train_network(num_pages=20)
+        optimizer, vectorizer, examples, graph = train_network(num_pages=99)
     else:
         with open('/data/saved.dill', 'rb') as f:
             optimizer, vectorizer, examples, graph = dill.load(f)
