@@ -1,3 +1,17 @@
+# shrek-nn - Detecting puns with neural networks
+### This respository was created for a High School project
+## State - Partially Completed (Continued in [pun_detector](https://github.com/FrostByte266/pun_detector))
+## New skills learned:
+* LSTM for speech pattern analysis
+* Natural Language Processing
+* Unit Testing
+* Basic web scraping for data collection
+## Skills improved upon:
+* Python
+* Docker
+* Tensorflow / Keras
+* PySimpleGui
+
 # Pun detection with neural networks
 
 ### Overview
